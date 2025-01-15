@@ -1,0 +1,285 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Digigrow Gerenciamento API Documentacao",
+    "description": "Processo Seletivo",
+    "contact": {
+      "email": "mateussantiss@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "Digigrow"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Tasks",
+      "description": "Tasks Management"
+    }
+  ],
+  "paths": {
+    "/task": {
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "Listar todas as tarefas",
+        "description": "Lista todas as tarefas",
+        "parameters": [
+          {
+            "name": "titleSearch",
+            "in": "query",
+            "required": false,
+            "description": "Texto para buscar tarefas",
+            "schema": {
+              "type": "string",
+              "example": "Pescar"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": "9f91b316-2a9c-4e48-ba72-a79be57e4202",
+                    "title": "Dia 20",
+                    "description": "Trabalhando",
+                    "dateToFinish": "2025-01-20",
+                    "completed": false
+                  },
+                  {
+                    "id": "da0f5bf1-2807-4a51-9fb4-e2efaeca9f24",
+                    "title": "Dia 20",
+                    "description": "Trabalhando",
+                    "dateToFinish": "2025-01-22",
+                    "completed": true
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Tasks"],
+        "summary": "Criar nova tarefa",
+        "description": "Criar uma nova tarefa, adiciona titulo, descricao e data de finalizacao",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Título da tarefa",
+                    "example": "Dia 20"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Descrição da tarefa",
+                    "example": "Trabalhando"
+                  },
+                  "dateToFinish": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data de conclusão da tarefa",
+                    "example": "2025-01-20"
+                  }
+                },
+                "required": ["title", "description", "dateToFinish"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "fad99041-0c3d-4186-a9c5-bfdf40ec9aff",
+                  "title": "Dia 20",
+                  "description": "Trabalhando",
+                  "dateToFinish": "20-01-2025",
+                  "completed": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Tasks"],
+        "summary": "Atualizar uma tarefa",
+        "description": "Atualizar uma tarefa pelo id, muda titulo, descricao e data de finalizacao",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID da tarefa a ser atualizada",
+            "schema": {
+              "type": "string",
+              "example": "9f91b316-2a9c-4e48-ba72-a79be57e4202"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Título da tarefa",
+                    "example": "Dia 20"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Descrição da tarefa",
+                    "example": "Trabalhando"
+                  },
+                  "dateToFinish": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data de conclusão da tarefa",
+                    "example": "2025-01-21T05:20:31.000Z"
+                  }
+                },
+                "required": ["title", "description", "dateToFinish"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "9f91b316-2a9c-4e48-ba72-a79be57e4202",
+                  "title": "Dia 21",
+                  "description": "Lavar Pano",
+                  "dateToFinish": "21-01-2025",
+                  "completed": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Tasks"],
+        "summary": "Deletar uma tarefa",
+        "description": "Deleta uma tarefa pelo ID fornecido",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID da tarefa a ser deletada",
+            "schema": {
+              "type": "string",
+              "example": "9f91b316-2a9c-4e48-ba72-a79be57e4202"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tarefa deletada com sucesso"
+          },
+          "404": {
+            "description": "Tarefa não encontrada"
+          },
+          "400": {
+            "description": "Requisição inválida"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Tasks/completed"],
+        "summary": "Atualizar status de tarefa concluida",
+        "description": "Atualizar o status pelo id, muda o completed",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID da tarefa a atualizar o status",
+            "schema": {
+              "type": "string",
+              "example": "9f91b316-2a9c-4e48-ba72-a79be57e4202"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": "9f91b316-2a9c-4e48-ba72-a79be57e4202",
+                  "title": "Dia 21",
+                  "description": "Lavar Pano",
+                  "dateToFinish": "21-01-2025",
+                  "completed": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "tasks": {
+        "required": ["title", "description", "dateToFinish"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "dateToFinish": {
+            "type": "Date"
+          },
+          "completed": {
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "id": "9f91b316-2a9c-4e48-ba72-a79be57e4202",
+          "title": "Passear com pets",
+          "description": "Passear com as duas em tempos diferentes!",
+          "dateToFinish": "2025-01-11T15:20:31.000Z",
+          "completed": true
+        }
+      }
+    }
+  }
+}
