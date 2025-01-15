@@ -110,13 +110,13 @@ export const Home = () => {
                 return (
                   <div className='card' key={task.id}>
                     <button className="button-circle" type="button" onClick={() => updateCompleted(task.id)}>
-                      <div className="button-inner-circle" >
-                        {
-                          task.completed && (
+                      {
+                        task.completed && (
+                          <div className="button-inner-circle" >
                             <IoIosCheckmark size={24} />
-                          )
-                        }
-                      </div>
+                          </div>
+                        )
+                      }
                     </button>
                     <div className='card-content'>
                       <div className="titulo-description">
